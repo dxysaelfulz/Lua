@@ -89,43 +89,4 @@ ProximityPromptService.PromptButtonHoldBegan:Connect(function(prompt, player)
 	if instantInteractEnabled then
 		fireproximityprompt(prompt)
 	end
-end)local speedBtn = makeButton("Speed: OFF",0.62,Color3.fromRGB(60,120,60))
-
-local function getChar()
-	return plr.Character or plr.CharacterAdded:Wait()
-end
-
-btn1.MouseButton1Click:Connect(function()
-	local char = getChar()
-	local hrp = char:WaitForChild("HumanoidRootPart")
-
-	hrp.CFrame = CFrame.new(-1086.69873, 61.9259872, -1326.26465,
-	-0.999916315, -6.85957602e-09, 0.0129352408,
-	-6.51035093e-09, 1, 2.70400609e-08,
-	-0.0129352408, 2.6953586e-08, -0.999916315)
-end)
-
-btn2.MouseButton1Click:Connect(function()
-	local char = getChar()
-
-	char:PivotTo(CFrame.new(-1113.57861, 58.9342117, 3269.5979))
-end)
-
-local speedEnabled = false
-local normalSpeed = 16
-local fastSpeed = 150
-
-speedBtn.MouseButton1Click:Connect(function()
-	local char = getChar()
-	local hum = char:WaitForChild("Humanoid")
-
-	speedEnabled = not speedEnabled
-
-	if speedEnabled then
-		hum.WalkSpeed = fastSpeed
-		speedBtn.Text = "Speed: ON"
-	else
-		hum.WalkSpeed = normalSpeed
-		speedBtn.Text = "Speed: OFF"
-	end
 end)
