@@ -9,9 +9,12 @@ local Window = Modal:CreateWindow({
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Remotes = ReplicatedStorage:WaitForChild("Remotes")
+local ProximityPromptService = game:GetService("ProximityPromptService")
 
 local AutoBuy2 = false
 local AutoBuy10 = false
+local InstantInteract = false
+local PromptConnection
 
 local Main = Window:AddTab("Main")
 
@@ -20,8 +23,30 @@ Main:New("Title")({
 })
 
 Main:New("Toggle")({
+    Title = "Instant Click",
+    Description = "Instant ProximityPrompt interact",
+    DefaultValue = false,
+    Callback = function(Value)
+        InstantInteract = Value
+
+        if InstantInteract then
+            PromptConnection = ProximityPromptService.PromptButtonHoldBegan:Connect(function(prompt)
+                if InstantInteract and prompt then
+                    fireproximityprompt(prompt)
+                end
+            end)
+        else
+            if PromptConnection then
+                PromptConnection:Disconnect()
+                PromptConnection = nil
+            end
+        end
+    end,
+})
+
+Main:New("Toggle")({
     Title = "Auto Buy x2",
-    Description = "Auto fire UpgradeJump",
+    Description = "Auto Upgrade x2Jump",
     DefaultValue = false,
     Callback = function(Value)
         AutoBuy2 = Value
@@ -34,7 +59,7 @@ Main:New("Toggle")({
 
 Main:New("Toggle")({
     Title = "Auto Buy x10",
-    Description = "Auto fire UpgradeJump2",
+    Description = "Auto Upgrade Jump x10",
     DefaultValue = false,
     Callback = function(Value)
         AutoBuy10 = Value
