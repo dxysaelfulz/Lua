@@ -10,13 +10,20 @@ local Window = Modal:CreateWindow({
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Remotes = ReplicatedStorage:WaitForChild("Remotes")
 local ProximityPromptService = game:GetService("ProximityPromptService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
 
 local AutoBuy2 = false
 local AutoBuy10 = false
 local InstantInteract = false
 local PromptConnection
+local SpeedEnabled = false
+local WalkSpeedAmount = 16
+local JumpEnabled = false
+local JumpAmount = 50
 
 local Main = Window:AddTab("Main")
+local Player = Window:AddTab("Player")
 
 Main:New("Title")({
     Title = "Auto buy Jump Power"
@@ -103,6 +110,80 @@ Main:New("Dropdown")({
     end,
 })
 
+Player:New("Slider")({
+    Title = "WalkSpeed",
+    Description = "Adjust movement speed",
+    Default = 16,
+    Minimum = 16,
+    Maximum = 400,
+    DecimalCount = 0,
+    Callback = function(Value)
+        WalkSpeedAmount = Value
+        if SpeedEnabled then
+            local Character = LocalPlayer.Character
+            if Character and Character:FindFirstChild("Humanoid") then
+                Character.Humanoid.WalkSpeed = WalkSpeedAmount
+            end
+        end
+    end,
+})
+
+Player:New("Toggle")({
+    Title = "Enable Speed",
+    Description = "Toggle custom WalkSpeed",
+    DefaultValue = false,
+    Callback = function(Value)
+        SpeedEnabled = Value
+
+        local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+        local Humanoid = Character:WaitForChild("Humanoid")
+
+        if SpeedEnabled then
+            Humanoid.WalkSpeed = WalkSpeedAmount
+        else
+            Humanoid.WalkSpeed = 16
+        end
+    end,
+})
+
+Player:New("Slider")({
+    Title = "JumpPower",
+    Description = "Adjust jump power",
+    Default = 50,
+    Minimum = 50,
+    Maximum = 500,
+    DecimalCount = 0,
+    Callback = function(Value)
+        JumpAmount = Value
+        if JumpEnabled then
+            local Character = LocalPlayer.Character
+            if Character and Character:FindFirstChild("Humanoid") then
+                Character.Humanoid.UseJumpPower = true
+                Character.Humanoid.JumpPower = JumpAmount
+            end
+        end
+    end,
+})
+
+Player:New("Toggle")({
+    Title = "Enable JumpPower",
+    Description = "Toggle custom jump power",
+    DefaultValue = false,
+    Callback = function(Value)
+        JumpEnabled = Value
+
+        local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+        local Humanoid = Character:WaitForChild("Humanoid")
+
+        Humanoid.UseJumpPower = true
+
+        if JumpEnabled then
+            Humanoid.JumpPower = JumpAmount
+        else
+            Humanoid.JumpPower = 50
+        end
+    end,
+})
+
 Window:SetTab("Main")
 Window:SetTheme("Rose")
-
