@@ -1,0 +1,83 @@
+local Modal = loadstring(game:HttpGet("https://github.com/lxte/Modal/releases/latest/download/main.lua"))()
+
+local Window = Modal:CreateWindow({
+    Title = "Ruòxi | Beta",
+    SubTitle = "by dugxyux7kd_",
+    Size = UDim2.fromOffset(400, 300),
+    MinimumSize = Vector2.new(250, 200),
+})
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Remotes = ReplicatedStorage:WaitForChild("Remotes")
+
+local AutoBuy2 = false
+local AutoBuy10 = false
+
+local Main = Window:AddTab("Main")
+
+Main:New("Title")({
+    Title = "Auto buy Jump Power"
+})
+
+Main:New("Toggle")({
+    Title = "Auto Buy x2",
+    Description = "Auto fire UpgradeJump",
+    DefaultValue = false,
+    Callback = function(Value)
+        AutoBuy2 = Value
+        while AutoBuy2 do
+            Remotes:WaitForChild("UpgradeJump"):FireServer()
+            task.wait(0.2)
+        end
+    end,
+})
+
+Main:New("Toggle")({
+    Title = "Auto Buy x10",
+    Description = "Auto fire UpgradeJump2",
+    DefaultValue = false,
+    Callback = function(Value)
+        AutoBuy10 = Value
+        while AutoBuy10 do
+            Remotes:WaitForChild("UpgradeJump2"):FireServer()
+            task.wait(0.2)
+        end
+    end,
+})
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local function TeleportTo(cf)
+    if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        LocalPlayer.Character.HumanoidRootPart.CFrame = cf
+    end
+end
+
+local TeleportLocations = {
+    ["Celestial"] = CFrame.new(-26.3641796, 714.539917, 430.733154, 0.999508321, -2.73615863e-09, 0.0313548371, 2.02506794e-13, 1, 8.72578667e-08, -0.0313548371, -8.7214957e-08, 0.999508321),
+    ["Secret"] = CFrame.new(-24.1002693, 511.773712, 360.029785, 0.998220384, -3.05938097e-09, -0.0596326999, -2.34561285e-12, 1, -5.13430116e-08, 0.0596326999, 5.12517815e-08, 0.998220384),
+    ["Mythic"] = CFrame.new(-26.0214405, 349.236603, 291.766876, 0.297665924, 1.82191631e-08, 0.954670072, -8.47059312e-08, 1, 7.32704164e-09, -0.954670072, -8.30472331e-08, 0.297665924),
+    ["Safe zone"] = CFrame.new(34.6413231, 3.30880499, -134.075729, -0.988590717, -2.13837055e-08, 0.150626704, -1.92821812e-08, 1, 1.54124056e-08, -0.150626704, 1.23321504e-08, -0.988590717),
+}
+
+Main:New("Title")({
+    Title = "Teleport Menu"
+})
+
+Main:New("Dropdown")({
+    Title = "Select Zone",
+    Description = "Choose location to teleport",
+    Options = { "Celestial", "Secret", "Mythic", "Safe Zone" },
+    Default = "Location 1",
+    Callback = function(Value)
+        local cf = TeleportLocations[Value]
+        if cf then
+            TeleportTo(cf)
+        end
+    end,
+})
+
+Window:SetTab("Main")
+Window:SetTheme("Rose")
+
