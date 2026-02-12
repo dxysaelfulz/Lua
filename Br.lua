@@ -31,7 +31,7 @@ Main:New("Title")({
 
 Main:New("Toggle")({
     Title = "Instant Click",
-    Description = "Instant ProximityPrompt interact",
+    Description = "Instant carry",
     DefaultValue = false,
     Callback = function(Value)
         InstantInteract = Value
@@ -90,7 +90,7 @@ local TeleportLocations = {
     ["Celestial"] = CFrame.new(-26.3641796, 714.539917, 430.733154, 0.999508321, -2.73615863e-09, 0.0313548371, 2.02506794e-13, 1, 8.72578667e-08, -0.0313548371, -8.7214957e-08, 0.999508321),
     ["Secret"] = CFrame.new(-24.1002693, 511.773712, 360.029785, 0.998220384, -3.05938097e-09, -0.0596326999, -2.34561285e-12, 1, -5.13430116e-08, 0.0596326999, 5.12517815e-08, 0.998220384),
     ["Mythic"] = CFrame.new(-26.0214405, 349.236603, 291.766876, 0.297665924, 1.82191631e-08, 0.954670072, -8.47059312e-08, 1, 7.32704164e-09, -0.954670072, -8.30472331e-08, 0.297665924),
-    ["Safe zone"] = CFrame.new(34.6413231, 3.30880499, -134.075729, -0.988590717, -2.13837055e-08, 0.150626704, -1.92821812e-08, 1, 1.54124056e-08, -0.150626704, 1.23321504e-08, -0.988590717),
+    ["safe"] = CFrame.new(-47.7460518, 3.30880499, -150.68367, -0.984896958, -4.8526168e-08, -0.173141643, -3.95187634e-08, 1, -5.54705331e-08, 0.173141643, -4.77904152e-08, -0.984896958),
 }
 
 Main:New("Title")({
@@ -100,8 +100,8 @@ Main:New("Title")({
 Main:New("Dropdown")({
     Title = "Select Zone",
     Description = "Choose location to teleport",
-    Options = { "Celestial", "Secret", "Mythic", "Safe Zone" },
-    Default = "Location 1",
+    Options = { "Celestial", "Secret", "Mythic", "safe" },
+    Default = "safe",
     Callback = function(Value)
         local cf = TeleportLocations[Value]
         if cf then
@@ -130,7 +130,7 @@ Player:New("Slider")({
 
 Player:New("Toggle")({
     Title = "Enable Speed",
-    Description = "Toggle custom WalkSpeed",
+    Description = "Toggle WalkSpeed",
     DefaultValue = false,
     Callback = function(Value)
         SpeedEnabled = Value
@@ -167,7 +167,7 @@ Player:New("Slider")({
 
 Player:New("Toggle")({
     Title = "Enable JumpPower",
-    Description = "Toggle custom jump power",
+    Description = "Toggle jump power",
     DefaultValue = false,
     Callback = function(Value)
         JumpEnabled = Value
