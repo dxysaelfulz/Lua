@@ -32,13 +32,24 @@ ProximityPromptService.PromptButtonHoldBegan:Connect(function(prompt)
     end
 end)
 
+local InfiniteJumpEnabled = false
+game:GetService("UserInputService").JumpRequest:Connect(function()
+    if InfiniteJumpEnabled then
+        local char = game:GetService("Players").LocalPlayer.Character
+        local hum = char and char:FindFirstChildOfClass("Humanoid")
+        if hum then
+            hum:ChangeState(Enum.HumanoidStateType.Jumping)
+        end
+    end
+end)
+
 local PlayerTab = Window:Tab({Title = "Player", Icon = "user"}) do
     PlayerTab:Section({Title = "Movement"})
 
     PlayerTab:Slider({
         Title = "WalkSpeed",
         Min = 16,
-        Max = 1000,
+        Max = 450,
         Rounding = 0,
         Value = 16,
         Callback = function(val)
@@ -50,12 +61,25 @@ local PlayerTab = Window:Tab({Title = "Player", Icon = "user"}) do
     PlayerTab:Slider({
         Title = "JumpPower",
         Min = 50,
-        Max = 450,
+        Max = 2000,
         Rounding = 0,
         Value = 50,
         Callback = function(val)
             local hum = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
             if hum then hum.JumpPower = val end
+        end
+    })
+
+    PlayerTab:Toggle({
+        Title = "Infinite Jump",
+        Value = false,
+        Callback = function(v)
+            InfiniteJumpEnabled = v
+            Window:Notify({
+                Title = "Infinite Jump",
+                Desc = v and "Enabled" or "Disabled",
+                Time = 2
+            })
         end
     })
 end
@@ -91,7 +115,7 @@ local MainTab = Window:Tab({Title = "Main", Icon = "star"}) do
     })
 
     MainTab:Button({
-        Title = "Teleport To safe Zone",
+        Title = "Teleport To Safe Zone",
         Desc = "Six Seven",
         Callback = function()
             local hrp = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
@@ -116,6 +140,6 @@ end
 
 Window:Notify({
     Title = "Ruóix",
-    Desc = "Loaded: script",
+    Desc = "Loaded: Script",
     Time = 4
 })
