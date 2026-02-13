@@ -92,7 +92,7 @@ local MainTab = Window:Tab({Title = "Main", Icon = "star"}) do
 
     MainTab:Button({
         Title = "Teleport To safe Zone",
-        Desc = "Teleport with rotation",
+        Desc = "Six Seven",
         Callback = function()
             local hrp = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
 
