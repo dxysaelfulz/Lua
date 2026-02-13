@@ -1,92 +1,121 @@
---// script open scr make in ai
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/x2zu/OPEN-SOURCE-UI-ROBLOX/refs/heads/main/X2ZU%20UI%20ROBLOX%20OPEN%20SOURCE/DummyUi-leak-by-x2zu/fetching-main/Tools/Framework.luau"))()
 
-local Players = game:GetService("Players")
+local Window = Library:Window({
+    Title = "Ruóix [ +1 speed for brainrot ]",
+    Desc = "By dugxyux7kd_",
+    Icon = 105059922903197,
+    Theme = "Dark",
+    Config = {
+        Keybind = Enum.KeyCode.LeftControl,
+        Size = UDim2.new(0, 500, 0, 400)
+    },
+    CloseUIButton = {
+        Enabled = true,
+        Text = "Ruóix"
+    }
+})
+
+local SidebarLine = Instance.new("Frame")
+SidebarLine.Size = UDim2.new(0, 1, 1, 0)
+SidebarLine.Position = UDim2.new(0, 140, 0, 0)
+SidebarLine.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+SidebarLine.BorderSizePixel = 0
+SidebarLine.ZIndex = 5
+SidebarLine.Parent = game:GetService("CoreGui")
+
 local ProximityPromptService = game:GetService("ProximityPromptService")
-local plr = Players.LocalPlayer
+local instantInteractEnabled = false
 
-local gui = Instance.new("ScreenGui", game.CoreGui)
-gui.Name = "ZenithHub"
+ProximityPromptService.PromptButtonHoldBegan:Connect(function(prompt)
+    if instantInteractEnabled then
+        fireproximityprompt(prompt)
+    end
+end)
 
-local frame = Instance.new("Frame", gui)
-frame.Size = UDim2.fromScale(0.25, 0.42)
-frame.Position = UDim2.fromScale(0.37, 0.28)
-frame.BackgroundColor3 = Color3.fromRGB(35,35,35)
-frame.Active = true
-frame.Draggable = true
-Instance.new("UICorner", frame)
+local PlayerTab = Window:Tab({Title = "Player", Icon = "user"}) do
+    PlayerTab:Section({Title = "Movement"})
 
-local title = Instance.new("TextLabel", frame)
-title.Size = UDim2.new(1,0,0.14,0)
-title.Text = "Zenith Hub | Beta"
-title.BackgroundTransparency = 1
-title.TextColor3 = Color3.new(1,1,1)
-title.TextScaled = true
+    PlayerTab:Slider({
+        Title = "WalkSpeed",
+        Min = 16,
+        Max = 1000,
+        Rounding = 0,
+        Value = 16,
+        Callback = function(val)
+            local hum = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+            if hum then hum.WalkSpeed = val end
+        end
+    })
 
-local function makeButton(text,posY,color)
-	local btn = Instance.new("TextButton", frame)
-	btn.Size = UDim2.fromScale(0.9,0.14)
-	btn.Position = UDim2.fromScale(0.05,posY)
-	btn.Text = text
-	btn.BackgroundColor3 = color
-	btn.TextColor3 = Color3.new(1,1,1)
-	Instance.new("UICorner", btn)
-	return btn
+    PlayerTab:Slider({
+        Title = "JumpPower",
+        Min = 50,
+        Max = 450,
+        Rounding = 0,
+        Value = 50,
+        Callback = function(val)
+            local hum = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+            if hum then hum.JumpPower = val end
+        end
+    })
 end
 
-local btn1 = makeButton("Teleport To Safe",0.16,Color3.fromRGB(70,70,70))
-local btn2 = makeButton("Teleport To End Zone",0.32,Color3.fromRGB(90,70,120))
-local speedBtn = makeButton("Speed: OFF",0.48,Color3.fromRGB(60,120,60))
-local interactBtn = makeButton("Instant Interact: ON",0.64,Color3.fromRGB(120,80,40))
+Window:Line()
 
-local function getChar()
-	return plr.Character or plr.CharacterAdded:Wait()
+local MainTab = Window:Tab({Title = "Main", Icon = "star"}) do
+    MainTab:Section({Title = "Interact"})
+
+    MainTab:Toggle({
+        Title = "Instant Click",
+        Value = false,
+        Callback = function(v)
+            instantInteractEnabled = v
+            Window:Notify({
+                Title = "Instant Click",
+                Desc = v and "Enabled" or "Disabled",
+                Time = 2
+            })
+        end
+    })
+
+    MainTab:Section({Title = "Teleport"})
+
+    MainTab:Button({
+        Title = "Teleport To End Zone",
+        Callback = function()
+            local hrp = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+            if hrp then
+                hrp.CFrame = CFrame.new(-1113.57861, 58.9342117, 4287.80518)
+            end
+        end
+    })
+
+    MainTab:Button({
+        Title = "Teleport To safe Zone",
+        Desc = "Teleport with rotation",
+        Callback = function()
+            local hrp = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+
+            if hrp then
+                hrp.CFrame = CFrame.new(
+                    -1086.69873, 61.9259872, -1326.26465,
+                    -0.999916315, -6.85957602e-09, 0.0129352408,
+                    -6.51035093e-09, 1, 2.70400609e-08,
+                    -0.0129352408, 2.6953586e-08, -0.999916315
+                )
+
+                Window:Notify({
+                    Title = "Teleport",
+                    Desc = "Teleport successful",
+                    Time = 3
+                })
+            end
+        end
+    })
 end
 
-btn1.MouseButton1Click:Connect(function()
-	local char = getChar()
-	local hrp = char:WaitForChild("HumanoidRootPart")
-	hrp.CFrame = CFrame.new(-1086.69873, 61.9259872, -1326.26465,
-	-0.999916315, -6.85957602e-09, 0.0129352408,
-	-6.51035093e-09, 1, 2.70400609e-08,
-	-0.0129352408, 2.6953586e-08, -0.999916315)
-end)
-
-btn2.MouseButton1Click:Connect(function()
-	local char = getChar()
-	char:PivotTo(CFrame.new(-1113.57861, 58.9342117, 3269.5979))
-end)
-
-local speedEnabled = false
-local normalSpeed = 16
-local fastSpeed = 60
-
-speedBtn.MouseButton1Click:Connect(function()
-	local hum = getChar():WaitForChild("Humanoid")
-	speedEnabled = not speedEnabled
-
-	if speedEnabled then
-		hum.WalkSpeed = fastSpeed
-		speedBtn.Text = "Speed: ON"
-	else
-		hum.WalkSpeed = normalSpeed
-		speedBtn.Text = "Speed: OFF"
-	end
-end)
-
-local instantInteractEnabled = true
-
-interactBtn.MouseButton1Click:Connect(function()
-	instantInteractEnabled = not instantInteractEnabled
-
-	if instantInteractEnabled then
-		interactBtn.Text = "Instant Interact: ON"
-	else
-		interactBtn.Text = "Instant Interact: OFF"
-	end
-end)
-
-ProximityPromptService.PromptButtonHoldBegan:Connect(function(prompt, player)
-	if instantInteractEnabled then
-		fireproximityprompt(prompt)
-	end
-end)
+Window:Notify({
+    Title = "Ruóix",
+    Desc = "Loaded: script",
+    Time = 4
+})
